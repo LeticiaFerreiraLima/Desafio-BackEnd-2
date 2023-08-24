@@ -2,7 +2,7 @@
 
 # Desafio do Módulo 2 - Back-end
 
-Projeto desenvolvido para a conclusão do módulo de API's, do curso de desenvolvimento Back end da [Cubos Academy](https://cubos.academy/), na 
+Projeto desenvolvido para a conclusão do módulo de API's, do curso de desenvolvimento Back end da [Cubos Academy](https://cubos.academy/)
 
 ## Proposta do desafio
 
