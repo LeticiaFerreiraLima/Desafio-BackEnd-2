@@ -167,180 +167,76 @@ A função permite atualizar os dados de um usuário, para isso ela verificar se
 
 ### Excluir Conta
 
-#### `DELETE` `/contas/:numeroConta`
+| Método HTTP | Rota |
+|:------------|------|
+|DELETE| `/contas/:numeroConta`|
 
-Esse endpoint deve excluir uma conta bancária existente.
+Essa função permite excluir uma conta bancária existente. Para isso, verifica se o número de conta informado como parâmetro de rota é válido, verifica se o saldo é 0 e então exclui.
 
--   Você deverá, **OBRIGATORIAMENTE**:
-
-    -   Verificar se o numero da conta passado como parametro na URL é válido
-    -   Permitir excluir uma conta bancária apenas se o saldo for 0 (zero)
-    -   Remover a conta do objeto de persistência de dados.
-
--   **Requisição**
-
-    -   Numero da conta bancária (passado como parâmetro na rota)
-
--   **Resposta**
-
-    Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-    Em caso de **falha na validação**, a resposta deverá possuir ***status code*** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.
-
-#### Exemplo de Resposta
-
-```javascript
-// HTTP Status 200 / 201 / 204
-// Sem conteúdo no corpo (body) da resposta
-```
-```javascript
-// HTTP Status 400 / 401 / 403 / 404
-{
-    "mensagem": "A conta só pode ser removida se o saldo for zero!"
-}
-```
 
 ### Depositar
 
-#### `POST` `/transacoes/depositar`
+| Método HTTP | Rota |
+|:------------|------|
+|POST| `/transacoes/depositar`|
 
-Esse endpoint deverá somar o valor do depósito ao saldo de uma conta válida e registrar essa transação.
+Essa função permite somar o valor de um depósito ao saldo de uma conta válida e registrar essa transação no objeto depositos, do banco de dados. 
+Para isso, ela verifica se o número da conta (numero_conta) e o valor a depositar foram passados no corpo da requisição, verifica a existência da conta, o valor (não pode ser negativo ou zero) e realiza a soma. Após realizar, é criado um objeto contendo as informações passadas e a data. Exemplo:
 
--   Você deverá, **OBRIGATORIAMENTE**:
-
-    -   Verificar se o numero da conta e o valor do deposito foram informados no body
-    -   Verificar se a conta bancária informada existe
-    -   Não permitir depósitos com valores negativos ou zerados
-    -   Somar o valor de depósito ao saldo da conta encontrada
-
--   **Requisição** - O corpo (body) deverá possuir um objeto com as seguintes propriedades (respeitando estes nomes):
-
-    -   numero_conta
-    -   valor
-
--   **Resposta**
-
-    Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-    Em caso de **falha na validação**, a resposta deverá possuir ***status code*** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.
-
-#### Exemplo de Requisição
+Requisição
 ```javascript
-// POST /transacoes/depositar
 {
 	"numero_conta": "1",
-	"valor": 1900
+	"valor": 500
 }
 ```
 
-#### Exemplo de Resposta
-
-```javascript
-// HTTP Status 200 / 201 / 204
-// Sem conteúdo no corpo (body) da resposta
-```
-```javascript
-// HTTP Status 400 / 401 / 403 / 404
-{
-    "mensagem": "O número da conta e o valor são obrigatórios!"
-}
-```
-
-#### Exemplo do registro de um depósito
-
+Registro de depósito
 ```javascript
 {
     "data": "2021-08-10 23:40:35",
     "numero_conta": "1",
-    "valor": 10000
+    "valor": 500
 }
 ```
 
 ### Sacar
 
-#### `POST` `/transacoes/sacar`
+| Método HTTP | Rota |
+|:------------|------|
+|POST| `/transacoes/sacar`|
 
-Esse endpoint deverá realizar o saque de um valor em uma determinada conta bancária e registrar essa transação.
+Essa função permite subtrair o valor de um depósito ao saldo de uma conta válida e registrar essa transação no objeto saldos, do banco de dados. Para isso, ela verifica se o número da conta (numero_conta) e o valor a sacar e a senha foram passados no corpo da requisição. Valida a existência da conta, o valor (conta deve possuir saldo suficiente) e realiza o saque. Após realizar, é criado um objeto contendo as informações passadas e a data. Exemplo:
 
--   Você deverá, **OBRIGATORIAMENTE**:
-
-    -   Verificar se o numero da conta, o valor do saque e a senha foram informados no body
-    -   Verificar se a conta bancária informada existe
-    -   Verificar se a senha informada é uma senha válida para a conta informada
-    -   Verificar se há saldo disponível para saque
-    -   Subtrair o valor sacado do saldo da conta encontrada
-
--   **Requisição** - O corpo (body) deverá possuir um objeto com as seguintes propriedades (respeitando estes nomes):
-
-    -   numero_conta
-    -   valor
-    -   senha
-
--   **Resposta**
-
-    Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-    Em caso de **falha na validação**, a resposta deverá possuir ***status code*** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.
-
-#### Exemplo de Requisição
+Requisição
 ```javascript
-// POST /transacoes/sacar
 {
 	"numero_conta": "1",
-	"valor": 1900,
-    "senha": "123456"
-}
-```
-#### Exemplo de Resposta
-```javascript
-// HTTP Status 200 / 201 / 204
-// Sem conteúdo no corpo (body) da resposta
-```
-```javascript
-// HTTP Status 400 / 401 / 403 / 404
-{
-    "mensagem": "O valor não pode ser menor que zero!"
+	"valor": 200,
+    "senha": "2325"
 }
 ```
 
-#### Exemplo do registro de um saque
-
+Registro de um saque
 ```javascript
 {
     "data": "2021-08-10 23:40:35",
     "numero_conta": "1",
-    "valor": 10000
+    "valor": 200
 }
 ```
 
 ### Tranferir
 
-#### `POST` `/transacoes/transferir`
+| Método HTTP | Rota |
+|:------------|------|
+|POST| `/transacoes/transferir`|
 
-Esse endpoint deverá permitir a transferência de recursos (dinheiro) de uma conta bancária para outra e registrar essa transação.
+Essa função permite transferir um valor de uma conta para outra e registrar essa transação no objeto transferências, do banco de dados. Para isso, ela verifica se o número da conta de origem e destino, o valor e a senha da conta de origem foram passados no corpo da requisição. Valida a existência das contas, o valor (conta de origem deve possuir saldo suficiente) e realiza a transferência. O valor transferido é subtraído do saldo da conta de origem e adicionado no saldo da conta de destino. Após realizar, é criado um objeto contendo as informações passadas e a data. Exemplo:
 
--   Você deverá, **OBRIGATORIAMENTE**:
-
-    -   Verificar se o número da conta de origem, de destino, senha da conta de origem e valor da transferência foram informados no body
-    -   Verificar se a conta bancária de origem informada existe
-    -   Verificar se a conta bancária de destino informada existe
-    -   Verificar se a senha informada é uma senha válida para a conta de origem informada
-    -   Verificar se há saldo disponível na conta de origem para a transferência
-    -   Subtrair o valor da transfência do saldo na conta de origem
-    -   Somar o valor da transferência no saldo da conta de destino
-
--   **Requisição** - O corpo (body) deverá possuir um objeto com as seguintes propriedades (respeitando estes nomes):
-
-    -   numero_conta_origem
-    -   numero_conta_destino
-    -   valor
-    -   senha
-
--   **Resposta**
-
-    Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-    Em caso de **falha na validação**, a resposta deverá possuir ***status code*** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.
-
-#### Exemplo de Requisição
+Requisição
 ```javascript
-// POST /transacoes/transferir
+
 {
 	"numero_conta_origem": "1",
 	"numero_conta_destino": "2",
@@ -348,20 +244,8 @@ Esse endpoint deverá permitir a transferência de recursos (dinheiro) de uma co
 	"senha": "123456"
 }
 ```
-#### Exemplo de Resposta
 
-```javascript
-// HTTP Status 200 / 201 / 204
-// Sem conteúdo no corpo (body) da resposta
-```
-```javascript
-// HTTP Status 400 / 401 / 403 / 404
-{
-    "mensagem": "Saldo insuficiente!"
-}
-```
-
-#### Exemplo do registro de uma transferência
+Registro de uma transferência
 
 ```javascript
 {
@@ -374,66 +258,40 @@ Esse endpoint deverá permitir a transferência de recursos (dinheiro) de uma co
 
 ### Saldo
 
+| Método HTTP | Rota |
+|:------------|------|
+|DELETE| `/contas/:numeroConta`|
 #### `GET` `/contas/saldo?numero_conta=123&senha=123`
 
-Esse endpoint deverá retornar o saldo de uma conta bancária.
+Essa função permite acessar o saldo de uma conta bancária. É verificado se todas as informações foram passadas na query params da url (numero da conta e senha), validada a existência da conta e a senha (se está correta) e exibido o saldo da conta informada. Exemplo:
 
--   Você deverá, **OBRIGATORIAMENTE**:
-
-    -   Verificar se o numero da conta e a senha foram informadas (passado como query params na url)
-    -   Verificar se a conta bancária informada existe
-    -   Verificar se a senha informada é uma senha válida
-    -   Exibir o saldo da conta bancária em questão
-
--   **Requisição** - query params
+Requisição - query params
 
     -   numero_conta
     -   senha
 
--   **Resposta**
-
-    -   Saldo da conta
-
-#### Exemplo de Resposta
-
+Resposta
 ```javascript
-// HTTP Status 200 / 201 / 204
 {
     "saldo": 13000
-}
-```
-```javascript
-// HTTP Status 400 / 401 / 403 / 404
-{
-    "mensagem": "Conta bancária não encontada!"
 }
 ```
 
 ### Extrato
 
-#### `GET` `/contas/extrato?numero_conta=123&senha=123`
+| Método HTTP | Rota |
+|:------------|------|
+|GET| `/contas/extrato?numero_conta=123&senha=123`|
 
-Esse endpoint deverá listar as transações realizadas de uma conta específica.
+Essea função lista as transações de uma conta específica que já foram realizadas.  É verificado se todas as informações foram passadas na query params da url (numero da conta e senha), validada a existência da conta e a senha (se está correta) e exibido o extrato da conta informada, contendo todas as transações já realizadas (depósitos, saques, transferências enviadas e recebidas). Exemplo:
 
--   Você deverá, **OBRIGATORIAMENTE**:
-
-    -   Verificar se o numero da conta e a senha foram informadas (passado como query params na url)
-    -   Verificar se a conta bancária informada existe
-    -   Verificar se a senha informada é uma senha válida
-    -   Retornar a lista de transferências, depósitos e saques da conta em questão.
-
--   **Requisição** - query params
+Requisição - query params
 
     -   numero_conta
     -   senha
 
--   **Resposta**
-    -   Relatório da conta
-
-#### Exemplo de Resposta
-
+Resposta
 ```javascript
-// HTTP Status 200 / 201 / 204
 {
   "depositos": [
     {
@@ -479,13 +337,5 @@ Esse endpoint deverá listar as transações realizadas de uma conta específica
 }
 ```
 
-```javascript
-// HTTP Status 400 / 401 / 403 / 404
-{
-    "mensagem": "Conta bancária não encontada!"
-}
-```
-
-**LEMBRE-SE**: Feito é melhor do que perfeito, mas não faça mal feito!!!
-
-###### tags: `back-end` `módulo 2` `nodeJS` `API REST` `desafio`
+![Extrato](image.png)
+> Dúvidas ou sugestões sobre o que foi feito no projeto? Entre em contato comigo via [LinkedIn](https://www.linkedin.com/in/leticia-ferreira-lima/)
