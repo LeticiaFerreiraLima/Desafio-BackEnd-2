@@ -125,6 +125,8 @@ Essa função permite listar todas as contas bancárias existentes. Para isso, e
 
 ```
 
+![Listar](/imagens/listar.png)
+
 ### Criar conta bancária
 
 | Método HTTP | Rota |
@@ -145,6 +147,8 @@ Essa função permite criar uma conta bancária, gerando um número único para 
 ```
 Caso já exista uma conta de mesmo CPF ou email, a conta não pode ser criada.
 
+![Criar](/imagens/criarConta.png)
+
 ### Atualizar usuário da conta bancária
 
 | Método HTTP | Rota |
@@ -163,7 +167,7 @@ A função permite atualizar os dados de um usuário, para isso ela verificar se
             "senha": "2523"
 }
 ```
-
+![Atualizar](/imagens/atualizar.png)
 
 ### Excluir Conta
 
@@ -173,6 +177,7 @@ A função permite atualizar os dados de um usuário, para isso ela verificar se
 
 Essa função permite excluir uma conta bancária existente. Para isso, verifica se o número de conta informado como parâmetro de rota é válido, verifica se o saldo é 0 e então exclui.
 
+![Deletar](/imagens/deletar.png)
 
 ### Depositar
 
@@ -200,6 +205,8 @@ Registro de depósito
 }
 ```
 
+![Depósito](/imagens/deposito.png)
+
 ### Sacar
 
 | Método HTTP | Rota |
@@ -225,6 +232,8 @@ Registro de um saque
     "valor": 200
 }
 ```
+
+![Saque](/imagens/saque.png)
 
 ### Tranferir
 
@@ -256,6 +265,8 @@ Registro de uma transferência
 }
 ```
 
+![Tranferência](/imagens/transferencia.png)
+
 ### Saldo
 
 | Método HTTP | Rota |
@@ -276,6 +287,8 @@ Resposta
     "saldo": 13000
 }
 ```
+
+![Saldo](/imagens/saldo.png)
 
 ### Extrato
 
@@ -337,5 +350,5 @@ Resposta
 }
 ```
 
-![Extrato](image.png)
+![Extrato](/imagens/extrato.png)
 > Dúvidas ou sugestões sobre o que foi feito no projeto? Entre em contato comigo via [LinkedIn](https://www.linkedin.com/in/leticia-ferreira-lima/)
